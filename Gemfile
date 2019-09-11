@@ -43,6 +43,7 @@ group :development, :test do
   gem 'rspec-mocks'
   gem 'ffaker'
   gem 'factory_bot_rails'
+  gem 'fuubar'
 end
 
 group :development do
