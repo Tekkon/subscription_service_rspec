@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root 'welcome#index'
 
-  get 'subscription' => 'subscriptions#index'
-  get 'subscription/:id' => 'subscriptions#show'
+  get 'subscriptions' => 'subscriptions#index'
+  get 'subscriptions/:id' => 'subscriptions#show'
 end

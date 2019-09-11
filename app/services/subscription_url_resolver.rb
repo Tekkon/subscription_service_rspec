@@ -14,7 +14,7 @@ class SubscriptionUrlResolver
     current_subscription = user.subscriptions.active.first || user.subscriptions.paused.first
 
     if current_subscription
-      subscription_path(current_subscription)
+      subscriptions_path(current_subscription)
     else
       root_path
     end
@@ -22,8 +22,8 @@ class SubscriptionUrlResolver
 
   private
 
-  def subscription_path(subscription)
-    URI(url_helpers.subscription_path(subscription)).tap do |uri|
+  def subscriptions_path(subscription)
+    URI(url_helpers.subscriptions_path(subscription)).tap do |uri|
       uri.query = request.query_string.presence
     end.to_s
   end
