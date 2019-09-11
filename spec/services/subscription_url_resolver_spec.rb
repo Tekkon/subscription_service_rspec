@@ -1,4 +1,4 @@
-require_relative '../rails_helper'
+require 'rails_helper'
 
 describe SubscriptionUrlResolver do
   let!(:user) { create(:user) }
@@ -7,32 +7,26 @@ describe SubscriptionUrlResolver do
   let(:subscription_path) { ->(subscription) { "#{URI(url_helpers.subscription_path(subscription)).to_s}?#{request.query_string}" } }
 
   describe '#call' do
-    context 'a subscription exists' do
-      before do
-        create(:subscription, :not_active, user: user)
-      end
+    subject { SubscriptionUrlResolver.call(user, request) }
 
-      context 'an active subscription exists' do
+    context 'when user has a current (active or paused) subscription' do
+      before { create(:subscription, :not_active, user: user) }
+
+      context 'and when the subscription is active' do
         let!(:active_subscription) { create(:subscription, :active, user: user) }
 
-        it 'returns an active subscription url' do
-          expect(SubscriptionUrlResolver.call(user, request)).to eq subscription_path[active_subscription]
-        end
+        it { is_expected.to eq subscription_path[active_subscription] }
       end
 
-      context 'an active subscription does not exists' do
+      context 'and when the subscription is paused' do
         let!(:paused_subscription) { create(:subscription, :paused, user: user) }
 
-        it 'returns a paused subscription url' do
-          expect(SubscriptionUrlResolver.call(user, request)).to eq subscription_path[paused_subscription]
-        end
+        it { is_expected.to eq subscription_path[paused_subscription] }
       end
     end
 
-    context 'there are no subscriptions' do
-      it 'returns the root path' do
-        expect(SubscriptionUrlResolver.call(user, request)).to eq url_helpers.root_path
-      end
+    context 'when user has no subscriptions' do
+      it { is_expected.to eq url_helpers.root_path }
     end
   end
 end
