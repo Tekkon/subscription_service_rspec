@@ -42,6 +42,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.7'
   gem 'rspec-mocks'
   gem 'ffaker'
+  gem 'factory_bot_rails'
+  gem 'fuubar'
 end
 
 group :development do
